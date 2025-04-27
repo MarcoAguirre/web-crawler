@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 class PageFetcher:
-    def __init__(self, url):
+    def __init__(self, url:str):
         self.url = url
 
     def fetch(self) -> BeautifulSoup:
