@@ -1,43 +1,50 @@
-import { useEffect, useState } from 'react'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
-import { getNewsByComments, getNewsByPoints } from './services/news.service'
-import { INewsItem } from './models'
+import {Stack, LinearProgress} from "@mui/material";
+
+import { getNewsByComments, getNewsByPoints } from "./services/news.service";
+import { INewsItem } from "./models";
+
+import { Button } from "./components/atoms/Button";
+import { Card } from "./components/molecules/Card";
 
 function App() {
-  // const [newsByComments, setNewsByComments] = useState<INewsItem[]>([]);
-  const [newsByPoints, setNewsByPoints] = useState<INewsItem[]>([]);
-
-  useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        // const newsByComments = await getNewsByComments();
-        // setNewsByComments(newsByComments);
-        const newsByPoints = await getNewsByPoints();
-        setNewsByPoints(newsByPoints);
-      } catch (error) {
-        console.error('Error fetching news from service:', error);
-      }
-    }
-    fetchNews();
-  }, []);
+  const [sortedNews, setsortedNews] = useState<INewsItem[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
-      <div>
-            <h1>News by Comments</h1>
-            <ul>
-                {/* {newsByComments.map((item) => ( */}
-                {newsByPoints.map((item) => (
-                    <li key={item.number}>
-                        {/* {item.title} ({item.number_of_comments} comments) */}
-                        {item.title} ({item.number_of_comments} points)
-                    </li>
-                ))}
-            </ul>
-        </div>
+      <Stack
+        direction="row"
+        spacing={2}
+        justifyContent="center"
+        alignItems="center"
+        sx={{ margin: "20px" }}
+        >
+        <Button
+          variant="contained"
+          text="Sort by Comments"
+          onClick={async () => {
+            setIsLoading(true);
+            const newsByComments = await getNewsByComments();
+            setsortedNews(newsByComments);
+            setIsLoading(false);
+          }}/>
+        <Button
+          variant="contained"
+          text="Sort by Points"
+          onClick={async () => {
+            setIsLoading(true);
+            const newsByPoints = await getNewsByPoints();
+            setsortedNews(newsByPoints);
+            setIsLoading(false);
+          }}/>
+        </Stack>
+        {isLoading && <LinearProgress/>}
+      <Card sortedNews={sortedNews} />
     </>
   );
-};
+}
 
-export default App
+export default App;
