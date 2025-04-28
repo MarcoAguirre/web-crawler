@@ -13,7 +13,7 @@ class EntryParser:
 
             for row in table:
                 number = row.select_one('.rank').get_text().strip('.')
-                title = row.select_one('.titleline > a').get_text()
+                title = row.select_one('.titleline').get_text()
                 subtext = row.find_next_sibling('tr').select_one('.subtext')
                 points_element = subtext.select_one('.score') if subtext else None
                 points = points_element.get_text().split()[0] if points_element else '0'
