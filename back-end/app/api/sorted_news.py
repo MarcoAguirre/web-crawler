@@ -1,9 +1,10 @@
 from fastapi import APIRouter
 
-from ..constants import Constants
-from ..fetcher import PageFetcher
-from ..parser import EntryParser
-from ..sorter import Sorter
+from app.constants import Constants
+from app.fetcher import PageFetcher
+from app.parser import EntryParser
+from app.sorter import Sorter
+from app.models import NewsItem
 
 router = APIRouter()
 
@@ -11,7 +12,7 @@ router = APIRouter()
 async def index() -> dict:
     return {"web-crawler api version": "0.0"}
 
-@router.get("/news/comments")
+@router.get("/news/comments", response_model=list[NewsItem])
 async def get_news_by_comments():
     fetcher = PageFetcher(Constants.NEWS_PAGE_URL)
     page_content = fetcher.fetch()
@@ -25,7 +26,7 @@ async def get_news_by_comments():
 
     return news_by_comments
 
-@router.get("/news/points")
+@router.get("/news/points", response_model=list[NewsItem])
 async def get_news_by_points():
     fetcher = PageFetcher(Constants.NEWS_PAGE_URL)
     page_content = fetcher.fetch()
