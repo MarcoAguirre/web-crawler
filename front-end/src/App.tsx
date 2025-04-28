@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 
-import Stack from "@mui/material/Stack";
+import {Stack, LinearProgress} from "@mui/material";
 
 import { getNewsByComments, getNewsByPoints } from "./services/news.service";
 import { INewsItem } from "./models";
@@ -11,6 +11,7 @@ import { Card } from "./components/molecules/Card";
 
 function App() {
   const [sortedNews, setsortedNews] = useState<INewsItem[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -25,17 +26,22 @@ function App() {
           variant="contained"
           text="Sort by Comments"
           onClick={async () => {
+            setIsLoading(true);
             const newsByComments = await getNewsByComments();
             setsortedNews(newsByComments);
+            setIsLoading(false);
           }}/>
         <Button
           variant="contained"
           text="Sort by Points"
           onClick={async () => {
+            setIsLoading(true);
             const newsByPoints = await getNewsByPoints();
             setsortedNews(newsByPoints);
+            setIsLoading(false);
           }}/>
         </Stack>
+        {isLoading && <LinearProgress/>}
       <Card sortedNews={sortedNews} />
     </>
   );
