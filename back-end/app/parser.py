@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from models import NewsItem
+from app.models import NewsItem
 
 class EntryParser:
     def __init__(self, limit: int, parsed_html: BeautifulSoup):

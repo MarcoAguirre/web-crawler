@@ -1,6 +1,6 @@
-from models import NewsItem
-from utils import count_words
-from constants import Constants
+from app.models import NewsItem
+from app.utils import count_words
+from app.constants import Constants
 
 class Sorter:
     def __init__(self, data: list[NewsItem]):
